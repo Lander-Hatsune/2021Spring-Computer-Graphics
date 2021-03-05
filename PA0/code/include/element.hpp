@@ -21,7 +21,7 @@ public:
     int xB, yB;
     Vector3f color;
     void draw(Image &img) override {
-        // TODO: Implement Bresenham Algorithm
+        // DONE: Implement Bresenham Algorithm
         printf("Draw a line from (%d, %d) to (%d, %d) \
 using color (%f, %f, %f)\n",
                xA, yA, xB, yB, color.x(), color.y(), color.z());
@@ -72,15 +72,43 @@ using color (%f, %f, %f)\n",
 
 class Circle : public Element {
 
+
+    
 public:
     int cx, cy;
     int radius;
     Vector3f color;
+
+    void symdraw(Image &img, int x, int y) {
+        // printf("(%d, %d) ", x, y);
+        img.SetPixel(cx + x, cy + y, color);
+        img.SetPixel(cx + y, cy + x, color);
+        img.SetPixel(cx - x, cy + y, color);
+        img.SetPixel(cx + y, cy - x, color);
+        img.SetPixel(cx + x, cy - y, color);
+        img.SetPixel(cx - y, cy + x, color);
+        img.SetPixel(cx - x, cy - y, color);
+        img.SetPixel(cx - y, cy - x, color);
+    }
+
     void draw(Image &img) override {
         // TODO: Implement Algorithm to draw a Circle
         printf("Draw a circle with center (%d, %d) \
 and radius %d using color (%f, %f, %f)\n",
                cx, cy, radius, color.x(), color.y(), color.z());
+        
+        int x = 0, y = radius;
+        double d = 1.25 - radius;
+
+        symdraw(img, x, y);
+
+        while (x <= y) {
+            if (d < 0) d += (2 * x + 3);
+            else {d += (2 * (x - y) + 5); y -= 1;}
+            x += 1;
+            symdraw(img, x, y);
+        }
+        putchar('\n');
     }
 };
 
