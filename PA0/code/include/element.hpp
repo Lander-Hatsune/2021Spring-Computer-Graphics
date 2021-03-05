@@ -4,9 +4,12 @@
 #include <image.hpp>
 #include <algorithm>
 #include <queue>
+#include <utility>
 #include <cstdio>
 
 using std::swap;
+using std::queue;
+using std::pair;
 
 class Element {
 public:
@@ -54,10 +57,7 @@ using color (%f, %f, %f)\n",
         
         int x = xA, y = yA, e = -dz;
 
-        // printf("neg k: %d, big k: %d\n", neg_k, big_k);
-
         for (int i = 0; i < loop; i++) {
-            // printf("(%d %d) ", x, y);
             img.SetPixel(x, y, color);
             (big_k ? y : x) += 1;
             e += dw << 1;
@@ -66,7 +66,6 @@ using color (%f, %f, %f)\n",
                 e -= dz << 1;
             }
         }
-        // putchar('\n');
     }
 };
 
@@ -80,7 +79,6 @@ public:
     Vector3f color;
 
     void symdraw(Image &img, int x, int y) {
-        // printf("(%d, %d) ", x, y);
         img.SetPixel(cx + x, cy + y, color);
         img.SetPixel(cx + y, cy + x, color);
         img.SetPixel(cx - x, cy + y, color);
@@ -92,7 +90,7 @@ public:
     }
 
     void draw(Image &img) override {
-        // TODO: Implement Algorithm to draw a Circle
+        // DONE: Implement Algorithm to draw a Circle
         printf("Draw a circle with center (%d, %d) \
 and radius %d using color (%f, %f, %f)\n",
                cx, cy, radius, color.x(), color.y(), color.z());
@@ -118,9 +116,34 @@ public:
     int cx, cy;
     Vector3f color;
     void draw(Image &img) override {
-        // TODO: Flood fill
+        // DONE: Flood fill
         printf("Flood fill source point = (%d, %d) \
 using color (%f, %f, %f)\n",
                cx, cy, color.x(), color.y(), color.z());
+
+        int dx[] = {0, 0, 1, -1};
+        int dy[] = {1, -1, 0, 0};
+        queue<pair<int, int>> q;
+        int w = img.Width(), h = img.Height();
+        
+        Vector3f oric = img.GetPixel(cx, cy);
+        q.push({cx, cy});
+        img.SetPixel(cx, cy, color);
+
+        while (!q.empty()) {
+            int x = q.front().first,
+                y = q.front().second;
+            q.pop();
+            
+            for (int d = 0; d < 4; d++) {
+                int nx = x + dx[d], ny = y + dy[d];
+                if (nx >= w || nx < 0 || ny >= h || ny < 0)
+                    continue;
+                if (img.GetPixel(nx, ny) == oric) {
+                    q.push({nx, ny});
+                    img.SetPixel(nx, ny, color);
+                }
+            }
+        }
     }
 };
