@@ -2,3 +2,5 @@
 **/output/
 **/bin/
 **/*.*~
+**/archive/
+**/*.zip

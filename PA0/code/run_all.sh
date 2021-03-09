@@ -18,4 +18,3 @@ cd ..
 mkdir -p output
 bin/PA0 testcases/canvas01_basic.txt output/canvas01.bmp
 bin/PA0 testcases/canvas02_emoji.txt output/canvas02.bmp
-bin/PA0 testcases/doraemon.txt output/doraemon.bmp
