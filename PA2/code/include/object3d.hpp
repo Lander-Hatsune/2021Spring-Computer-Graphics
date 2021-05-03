@@ -26,8 +26,6 @@ public:
         if (material) material->Use();
     }
 
-protected:
-
     Material *material;
 };
 

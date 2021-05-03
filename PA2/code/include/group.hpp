@@ -43,7 +43,13 @@ public:
         return list.size();
     }
 
-private:
+    void drawGL() override {
+        Object3D::drawGL();
+        for (auto obj: list) {
+            obj->drawGL();
+        }
+    }
+
     std::vector<Object3D*> list;
 
 };

@@ -28,8 +28,17 @@ public:
     bool intersect(const Ray &r, Hit &h, float tmin) override;
 
     void drawGL() override {
-        // TODO (PA2): Call drawGL for each individual triangle.
+        // DONE (PA2): Call drawGL for each individual triangle.
+        Object3D::drawGL();
+
         glBegin(GL_TRIANGLES);
+        for (int idx = 0; idx < t.size(); idx++) {
+            TriangleIndex i = t[idx];
+            glNormal3f(n[idx][0], n[idx][1], n[idx][2]);
+            glVertex3f(v[i[0]][0], v[i[0]][1], v[i[0]][2]);
+            glVertex3f(v[i[1]][0], v[i[1]][1], v[i[1]][2]);
+            glVertex3f(v[i[2]][0], v[i[2]][1], v[i[2]][2]);
+        }
         glEnd();
     }
 
