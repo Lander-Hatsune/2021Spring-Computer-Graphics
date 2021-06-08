@@ -8,7 +8,7 @@
 
 #include <algorithm>
 
-// TODO (PA3): Implement Bernstein class to compute spline basis function.
+// DONE (PA3): Implement Bernstein class to compute spline basis function.
 //       You may refer to the python-script for implementation.
 
 // The CurvePoint object stores information about a point on a curve
