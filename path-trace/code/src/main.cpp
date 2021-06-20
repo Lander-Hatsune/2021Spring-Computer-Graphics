@@ -10,6 +10,8 @@
 
 using namespace std;
 
+int SAMPLE = 4;
+
 int main(int argc, char *argv[]) {
     for (int argNum = 1; argNum < argc; ++argNum) {
         std::cout << "Argument " << argNum << " is: " << argv[argNum] << std::endl;
@@ -28,25 +30,30 @@ int main(int argc, char *argv[]) {
 
     Image img(camera->getWidth(), camera->getHeight());
     Image img_atals(camera->getWidth(), camera->getHeight());
+    
 
+    #pragma omp parallel for schedule(dynamic, 1)
     for (int x = 0; x < camera->getWidth(); x++) {
         for (int y = 0; y < camera->getHeight(); y++) {
-            Ray ray = camera->generateRay(Vector2f(x, y));
-            Hit hit;
-            if (group->intersect(ray, hit, 0)) {
-                Vector3f finColor = Vector3f::ZERO;
-                for (int i = 0; i < sceneParser.getNumLights(); i++) {
-                    Light* light = sceneParser.getLight(i);
-                    Vector3f direc, lightColor;
-                    light->getIllumination(ray.pointAtParameter(hit.getT()),
-                                           direc, lightColor);
-                    finColor += hit.getMaterial()->Shade(ray, hit, direc,
-                                                           lightColor);
+            Vector3f finColor = Vector3f::ZERO;
+            for (int sample = 0; sample < SAMPLE; sample++) {
+                Ray ray = camera->generateRay(Vector2f(x, y));
+                Hit hit;
+                if (group->intersect(ray, hit, 0)) {
+                    for (int i = 0; i < sceneParser.getNumLights(); i++) {
+                        Light* light = sceneParser.getLight(i);
+                        Vector3f direc, lightColor;
+                        light->getIllumination(ray.pointAtParameter(hit.getT()),
+                                               direc, lightColor);
+                        finColor += hit.getMaterial()->Shade(ray, hit, direc,
+                                                             lightColor);
+                    }
+                } else {
+                    finColor += sceneParser.getBackgroundColor();
                 }
-                img.SetPixel(x, y, finColor);
-            } else {
-                img.SetPixel(x, y, sceneParser.getBackgroundColor());
             }
+            finColor = finColor / SAMPLE;
+            img.SetPixel(x, y, finColor);
         }
     }
 

@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include "ray.hpp"
+#include <cstdlib>
 #include <vecmath.h>
 #include <float.h>
 #include <cmath>
@@ -22,6 +23,7 @@ public:
 
     // Generate rays for each screen-space coordinate
     virtual Ray generateRay(const Vector2f &point) = 0;
+    virtual Ray randGenRay(const Vector2f &point) = 0;
     virtual ~Camera() = default;
 
     int getWidth() const { return width; }
@@ -62,6 +64,11 @@ public:
         Vector3f direc = R * direc_cam;
 
         return Ray(center, direc);
+    }
+    Ray randGenRay(const Vector2f &point) override {
+        Vector2f sample(point.x() + rand() / RAND_MAX,
+                        point.y() + rand() / RAND_MAX);
+        return generateRay(sample);
     }
 private:
     float angle;
