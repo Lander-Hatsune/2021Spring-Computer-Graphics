@@ -1,4 +1,5 @@
 #include <vecmath.h>
+#include <cmath>
 #include <cstdio>
 #include <iostream>
 
@@ -11,6 +12,33 @@
 using namespace std;
 
 int SAMPLE = 4;
+int RECURSIVE_MAX = 10;
+Camera *camera;
+Group *group;
+Vector3f bgcolor;
+const double PI = acos(-1);
+
+Ray diffuseRay(const Vector3f& p, const Vector3f& n) {
+    Vector3f ori = p + n;
+    double r = 1.;
+    double theta = 2 * PI * rand() / RAND_MAX,
+        rho = PI * rand() / RAND_MAX;
+    return Ray(p, (ori + Vector3f(r * cos(rho) * cos(theta),
+                                  r * cos(rho) * sin(theta),
+                                  r * sin(rho)) - p).normalized());
+}
+
+Vector3f getColor(const Ray r, int rec) {
+    if (rec >= RECURSIVE_MAX) return Vector3f::ZERO;
+    Hit h;
+    if (group->intersect(r, h, 0.001)) {
+        Vector3f p = r.pointAtParameter(h.getT());
+        Vector3f n = h.getNormal();
+        return 0.5 * getColor(diffuseRay(p, n), rec + 1);
+    } else {
+        return bgcolor;
+    }
+}
 
 int main(int argc, char *argv[]) {
     for (int argNum = 1; argNum < argc; ++argNum) {
@@ -18,15 +46,17 @@ int main(int argc, char *argv[]) {
     }
 
     if (argc != 3) {
-        cout << "Usage: ./bin/PA1 <input scene file> <output bmp file>" << endl;
+        cout << "Usage: ./bin/path-trace <input scene file> <output bmp file>"
+             << endl;
         return 1;
     }
     string inputFile = argv[1];
     string outputFile = argv[2];
 
     SceneParser sceneParser(inputFile.c_str());
-    Camera* camera = sceneParser.getCamera();
-    Group* group = sceneParser.getGroup();
+    camera = sceneParser.getCamera();
+    group = sceneParser.getGroup();
+    bgcolor = sceneParser.getBackgroundColor();
 
     Image img(camera->getWidth(), camera->getHeight());
     Image img_atals(camera->getWidth(), camera->getHeight());
@@ -38,19 +68,7 @@ int main(int argc, char *argv[]) {
             Vector3f finColor = Vector3f::ZERO;
             for (int sample = 0; sample < SAMPLE; sample++) {
                 Ray ray = camera->generateRay(Vector2f(x, y));
-                Hit hit;
-                if (group->intersect(ray, hit, 0)) {
-                    for (int i = 0; i < sceneParser.getNumLights(); i++) {
-                        Light* light = sceneParser.getLight(i);
-                        Vector3f direc, lightColor;
-                        light->getIllumination(ray.pointAtParameter(hit.getT()),
-                                               direc, lightColor);
-                        finColor += hit.getMaterial()->Shade(ray, hit, direc,
-                                                             lightColor);
-                    }
-                } else {
-                    finColor += sceneParser.getBackgroundColor();
-                }
+                finColor += getColor(ray, 0);
             }
             finColor = finColor / SAMPLE;
             img.SetPixel(x, y, finColor);
