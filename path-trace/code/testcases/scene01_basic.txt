@@ -17,19 +17,20 @@ Lights {
 }
 
 Background {
-    color 0 0 1.0 
+    color 1 1 1 
 }
 
 Materials {
     numMaterials 4
-    Material { diffuseColor 1 0 0 
-      specularColor 1 1 1
+    Material { diffuseColor 0.8 0 0 
+      specularColor 0.1 0.1 0.2
       shininess 20
     }
-    Material { diffuseColor 0 1 0 }
-    Material { diffuseColor 0 0 1 }
-    Material { diffuseColor 1 1 1 
-	specularColor 1 1 1
+    Material { emitColor 0.2 0.8 0.2 }
+    Material { diffuseColor 0 0 0.5
+      specularColor 0.1 0.1 0.2}
+    Material { diffuseColor 0 0 0
+	specularColor 0.3 0.3 0.3
 	shininess 20}
 }
 

@@ -15,16 +15,18 @@ public:
         t = 1e38;
     }
 
-    Hit(float _t, Material *m, const Vector3f &n) {
+    Hit(float _t, Material *m, const Vector3f &n, bool outside = true) {
         t = _t;
         material = m;
         normal = n;
+        outside = outside;
     }
 
     Hit(const Hit &h) {
         t = h.t;
         material = h.material;
         normal = h.normal;
+        outside = h.outside;
     }
 
     // destructor
@@ -42,17 +44,22 @@ public:
         return normal;
     }
 
-    void set(float _t, Material *m, const Vector3f &n) {
+    bool isOutside() const {
+        return outside;
+    }
+
+    void set(float _t, Material *m, const Vector3f &n, bool outside = true) {
         t = _t;
         material = m;
         normal = n;
+        this->outside = outside;
     }
 
 private:
     float t;
     Material *material;
     Vector3f normal;
-
+    bool outside;
 };
 
 inline std::ostream &operator<<(std::ostream &os, const Hit &h) {

@@ -3,42 +3,21 @@
 #include <cstdio>
 #include <iostream>
 
+#include "Vector3f.h"
 #include "scene_parser.hpp"
 #include "image.hpp"
 #include "camera.hpp"
 #include "group.hpp"
 #include "light.hpp"
+#include "trace.hpp"
 
-using namespace std;
+using std::cout;
+using std::endl;
+using std::string;
 
-int SAMPLE = 4;
-int RECURSIVE_MAX = 10;
 Camera *camera;
 Group *group;
 Vector3f bgcolor;
-const double PI = acos(-1);
-
-Ray diffuseRay(const Vector3f& p, const Vector3f& n) {
-    Vector3f ori = p + n;
-    double r = 1.;
-    double theta = 2 * PI * rand() / RAND_MAX,
-        rho = PI * rand() / RAND_MAX;
-    return Ray(p, (ori + Vector3f(r * cos(rho) * cos(theta),
-                                  r * cos(rho) * sin(theta),
-                                  r * sin(rho)) - p).normalized());
-}
-
-Vector3f getColor(const Ray r, int rec) {
-    if (rec >= RECURSIVE_MAX) return Vector3f::ZERO;
-    Hit h;
-    if (group->intersect(r, h, 0.001)) {
-        Vector3f p = r.pointAtParameter(h.getT());
-        Vector3f n = h.getNormal();
-        return 0.5 * getColor(diffuseRay(p, n), rec + 1);
-    } else {
-        return bgcolor;
-    }
-}
 
 int main(int argc, char *argv[]) {
     for (int argNum = 1; argNum < argc; ++argNum) {
@@ -61,16 +40,19 @@ int main(int argc, char *argv[]) {
     Image img(camera->getWidth(), camera->getHeight());
     Image img_atals(camera->getWidth(), camera->getHeight());
     
-
     #pragma omp parallel for schedule(dynamic, 1)
     for (int x = 0; x < camera->getWidth(); x++) {
         for (int y = 0; y < camera->getHeight(); y++) {
             Vector3f finColor = Vector3f::ZERO;
-            for (int sample = 0; sample < SAMPLE; sample++) {
+            for (int sample = 0; sample < ATALS_SAMPLE; sample++) {
                 Ray ray = camera->generateRay(Vector2f(x, y));
-                finColor += getColor(ray, 0);
+                finColor += trace::getColor(ray, group, bgcolor,
+                                            Vector3f(1, 1, 1));
             }
-            finColor = finColor / SAMPLE;
+            finColor = finColor / ATALS_SAMPLE;
+            finColor = Vector3f(sqrt(finColor.x()),
+                                sqrt(finColor.y()),
+                                sqrt(finColor.z()));
             img.SetPixel(x, y, finColor);
         }
     }

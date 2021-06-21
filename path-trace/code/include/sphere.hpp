@@ -41,15 +41,15 @@ public:
 
         float t = t_p - sqrt(radius * radius - d_square);
 
-        bool frontface = true;
-        if (t < 0) {frontface = false; t = -t;}
+        bool outside = true;
+        if (t < 0) {outside = false; t = -t;}
         
         if (t < tmin) return false;// impossible t
         if (t > h.getT()) return false;// farther t
 
         Vector3f n(r.pointAtParameter(t) - center);
         n.normalize();
-        h.set(t, material, n);
+        h.set(t, material, n, outside);
         return true;
     }
 

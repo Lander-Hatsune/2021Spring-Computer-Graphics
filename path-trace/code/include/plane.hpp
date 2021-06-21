@@ -24,12 +24,13 @@ public:
     ~Plane() override = default;
 
     bool intersect(const Ray &r, Hit &h, float tmin) override {
-        float t = (d + Vector3f::dot(normal, r.getOrigin())) /
+        float t = (Vector3f::dot(normal, r.getOrigin()) + d) /
             Vector3f::dot(normal, r.getDirection());
+
         if (t <= 0) return false;
 
-        if (t < tmin) return false;// impossible t
-        if (t > h.getT()) return false;// farther t
+        if (fabs(t) < tmin) return false;// impossible t
+        if (fabs(t) > h.getT()) return false;// farther t
 
         h.set(t, material, normal);
         return true;

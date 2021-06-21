@@ -5,20 +5,27 @@
 #include <vecmath.h>
 #include <algorithm>
 
+#include "Vector3f.h"
 #include "ray.hpp"
 #include "hit.hpp"
+#include "math.hpp"
 #include <iostream>
 
-inline float clamp(float x) {
-    return x > 0 ? x : 0;
-}
 
 // DONE: Implement Shade function that computes Phong introduced in class.
 class Material {
+private:
 public:
 
-    explicit Material(const Vector3f &d_color, const Vector3f &s_color = Vector3f::ZERO, float s = 0) :
-            diffuseColor(d_color), specularColor(s_color), shininess(s) {
+    explicit Material(const Vector3f &d_color,
+                      const Vector3f &s_color = Vector3f::ZERO,
+                      float s = 0,
+                      float r = 0,
+                      const Vector3f &e_color = Vector3f::ZERO,
+                      const Vector3f &r_color = Vector3f::ZERO) :
+        diffuseColor(d_color), specularColor(s_color),
+        shininess(s), refract(r), emitColor(e_color),
+        refractColor(r_color) {
 
     }
 
@@ -27,6 +34,23 @@ public:
     virtual Vector3f getDiffuseColor() const {
         return diffuseColor;
     }
+    virtual Vector3f getSpecularColor() const {
+        return specularColor;
+    }
+    virtual float getShininess() const {
+        return shininess;
+    }
+    virtual float getRefract() const {
+        return refract;
+    }
+    virtual Vector3f getRefractColor() const {
+        return refractColor;
+    }
+
+    virtual Vector3f getEmitColor() const {
+        return emitColor;
+    }
+
 
     Vector3f Shade(const Ray &ray, const Hit &hit,
                    const Vector3f &dirToLight, const Vector3f &lightColor) {
@@ -43,6 +67,9 @@ protected:
     Vector3f diffuseColor;
     Vector3f specularColor;
     float shininess;
+    float refract;
+    Vector3f emitColor;
+    Vector3f refractColor;
 };
 
 
