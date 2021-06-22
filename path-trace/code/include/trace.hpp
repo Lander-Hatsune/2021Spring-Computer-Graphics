@@ -51,7 +51,7 @@ namespace trace{
                       Vector3f factor) {
         if (factor.length() < 0.001) return Vector3f::ZERO;
         Hit h;
-        if (group->intersect(r, h, 1e-3)) {
+        if (group->intersect(r, h, 1e-6)) {
             Material* m = h.getMaterial();
             const Vector3f& p = r.pointAtParameter(h.getT());
             const Vector3f& n = h.getNormal();

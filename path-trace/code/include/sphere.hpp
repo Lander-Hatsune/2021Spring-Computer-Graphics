@@ -28,8 +28,7 @@ public:
     bool intersect(const Ray &r, Hit &h, float tmin) override {
         Vector3f l = center - r.getOrigin();
 
-        float t_p = Vector3f::dot(l, r.getDirection())
-            / r.getDirection().length();
+        float t_p = Vector3f::dot(l, r.getDirection());
 
         t_p = (l.length() > radius) ? t_p : -t_p;// inside : outside
 

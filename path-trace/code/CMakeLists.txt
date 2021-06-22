@@ -27,7 +27,9 @@ set(INCLUDE
   include/scene_parser.hpp
   include/sphere.hpp
   include/transform.hpp
-  include/triangle.hpp)
+  include/triangle.hpp
+  include/curve.hpp
+  include/revsurface.hpp)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)

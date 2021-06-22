@@ -1,0 +1,71 @@
+PerspectiveCamera {
+    center 5 0.01 0.01
+    direction -1 0 0
+    up 0 0 1
+    angle 30
+    width 256
+    height 256
+}
+
+Background {
+    color 0 0 0
+}
+
+Materials {
+    numMaterials 6
+    Material { emitColor 1 1 1 }
+    Material { diffuseColor 0.75 0.75 0.75 }
+    Material { diffuseColor 0.75 0.25 0.25 }
+    Material { diffuseColor 0.25 0.25 0.75 }
+    Material { specularColor 0.99 0.99 0.99
+               shininess 40 }
+    Material { refract 1.4
+               refractColor 0.9 0.9 0.9 }
+}
+
+Group {
+    numObjects 7
+    MaterialIndex 1
+    Sphere {
+        center 0 0 500
+        radius 499
+    }
+    Sphere {
+        center -500 0 0
+        radius 499
+    }
+    Sphere {
+        center 0 0 -500
+        radius 499
+    }
+
+    MaterialIndex 2
+    Sphere {
+        center 0 -500 0
+        radius 499
+    }
+
+    MaterialIndex 3
+    Sphere {
+        center 0 500 0
+        radius 499
+    }
+
+    MaterialIndex 0
+    Transform {
+        Translate 0 0 1.39
+        Scale 0.4 0.4 0.4
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
+    }
+
+    MaterialIndex 1
+    Transform {
+        Translate 1 -1 0
+        Scale 4 4 4
+        TriangleMesh {
+            obj_file mesh/bunny_200.obj
+        }
+    }
+}

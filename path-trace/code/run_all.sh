@@ -22,8 +22,12 @@ cd ..
 # Run all testcases. 
 # You can comment some lines to disable the run of specific examples.
 mkdir -p output
-bin/path-trace testcases/scene00.txt output/scene00.bmp
-xdg-open output/scene00.bmp
+#bin/path-trace testcases/1.txt output/1.bmp
+#xdg-open output/1.bmp
+#bin/path-trace testcases/2.txt output/2.bmp
+#xdg-open output/2.bmp
+bin/path-trace testcases/3.txt output/3.bmp
+xdg-open output/3.bmp
 #bin/path-trace testcases/scene01_basic.txt output/scene01.bmp
 #xdg-open output/scene01.bmp
 #bin/path-trace testcases/scene05_bunny_200.txt output/scene05.bmp

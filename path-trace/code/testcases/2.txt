@@ -1,10 +1,10 @@
 PerspectiveCamera {
-    center 5 0 0
+    center 5 0.01 0.01
     direction -1 0 0
     up 0 0 1
     angle 30
-    width 256
-    height 256
+    width 1080
+    height 1080
 }
 
 Background {
@@ -17,10 +17,10 @@ Materials {
     Material { diffuseColor 0.9 0.9 0.9 }
     Material { diffuseColor 0.9 0.2 0.2 }
     Material { diffuseColor 0.2 0.9 0.2 }
-    Material { specularColor 0.8 0.8 0.8
+    Material { specularColor 0.99 0.99 0.99
                shininess 40 }
-    Material { refract 1.4
-               refractColor 0.9 0.9 0.9 }
+    Material { refract 1.7
+               refractColor 0.99 0.99 0.99 }
 }
 
 Group {
@@ -52,21 +52,28 @@ Group {
     }
 
     MaterialIndex 0
-    Sphere {
-       center 0 0 51
-       radius 50.002
+    Transform {
+        Translate 0 0 1
+        Scale 0.4 0.4 0.01
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
     }
 
     MaterialIndex 4
-    Sphere {
-       center -0.3 -0.4 -0.7
-       radius 0.29
+    Transform {
+        Translate -0.4 -0.4 -0.6
+        ZRotate 30
+        Scale 0.2 0.2 0.6
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
     }
 
     MaterialIndex 5
     Sphere {
-       center 0.5 0.4 -0.7
-       radius 0.29
+        center 0.5 0.5 -0.7
+        radius 0.3
     }
 }
 
