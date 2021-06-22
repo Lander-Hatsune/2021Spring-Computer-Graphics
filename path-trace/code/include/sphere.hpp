@@ -48,7 +48,9 @@ public:
 
         Vector3f n(r.pointAtParameter(t) - center);
         n.normalize();
-        h.set(t, material, n, outside);
+        float theta = acos(-n.y());
+        float phi = atan2(-n.z(), n.x()) + PI;
+        h.set(t, material, n, theta / PI, phi / 2 / PI, outside);
         return true;
     }
 
@@ -56,7 +58,6 @@ protected:
     Vector3f center;
     float radius;
     Material *material;
-
 };
 
 

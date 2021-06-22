@@ -11,7 +11,8 @@ set(SRC
   src/main.cpp
   src/scene_parser.cpp
   src/image.cpp
-  src/mesh.cpp)
+  src/mesh.cpp
+  src/material.cpp)
 
 set(INCLUDE
   include/camera.hpp

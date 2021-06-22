@@ -55,9 +55,8 @@ namespace trace{
             Material* m = h.getMaterial();
             const Vector3f& p = r.pointAtParameter(h.getT());
             const Vector3f& n = h.getNormal();
-            if (m->getEmitColor().length() > 0.001) {// light source
-                
-                return m->getEmitColor();
+            if (m->getEmitColor(h.getX(), h.getY()).length() > 0.001) {// light source
+                return m->getEmitColor(h.getX(), h.getY());
                 
             } else if (fabs(m->getRefract() - 1) > 0.001) {// glass
 
@@ -67,13 +66,13 @@ namespace trace{
                 float cos_theta = Vector3f::dot(-r.getDirection(), n);
                 float sin_theta = sqrt(1 - cos_theta * cos_theta);
                 bool cannot_refract = it * sin_theta > 1.0;
-                /*
+
                 if (cannot_refract ||
                     reflectance(cos_theta, it) > (double) rand() / RAND_MAX) {
-                    return 0.5 *
+                    return 0.9 *
                         getColor(reflect(r, p, n, m->getShininess()),
-                                 group, bgcolor, factor * 0.5);
-                                 } else*/
+                                 group, bgcolor, factor * 0.9);
+                } else
                     return m->getRefractColor() *
                         getColor(refract(r, p, n, m->getRefract(), h.isOutside()),
                                  group, bgcolor, factor * m->getRefractColor());
@@ -81,14 +80,17 @@ namespace trace{
             } else {// solid
 
                 Vector3f color = Vector3f::ZERO;
-                if (m->getDiffuseColor().length() > 0.001)
-                    color += m->getDiffuseColor() *
+                if (m->getDiffuseColor(h.getX(), h.getY()).length() > 0.001)
+                    color += m->getDiffuseColor(h.getX(), h.getY()) *
                         getColor(diffuse(p, n),
-                                 group, bgcolor, factor * m->getDiffuseColor());
-                if (m->getSpecularColor().length() > 0.001)
-                    m->getSpecularColor() *
+                                 group, bgcolor,
+                                 factor * m->getDiffuseColor(h.getX(), h.getY()));
+                if (m->getSpecularColor(h.getX(), h.getY()).length() > 0.001)
+                    
+                    color += m->getSpecularColor(h.getX(), h.getY()) *
                         getColor(reflect(r, p, n, m->getShininess()),
-                                 group, bgcolor, factor * m->getSpecularColor());
+                                 group, bgcolor,
+                                 factor * m->getSpecularColor(h.getX(), h.getY()));
                 return color;
             }
         } else {

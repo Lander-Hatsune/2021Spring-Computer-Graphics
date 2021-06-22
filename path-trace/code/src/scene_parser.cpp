@@ -243,6 +243,9 @@ Material *SceneParser::parseMaterial() {
     d_filename[0] = 0;
     char s_filename[MAX_PARSER_TOKEN_LENGTH];
     s_filename[0] = 0;
+    char e_filename[MAX_PARSER_TOKEN_LENGTH];
+    e_filename[0] = 0;
+    int width = 0, height = 0;
     Vector3f diffuseColor(1, 1, 1), specularColor(0, 0, 0),
         emitColor(0, 0, 0), refractColor(0, 0, 0);
     float shininess = 1.;
@@ -259,8 +262,16 @@ Material *SceneParser::parseMaterial() {
             shininess = readFloat();
         } else if (strcmp(token, "diffuseTexture") == 0) {
             getToken(d_filename);
+            width = readInt();
+            height = readInt();
         } else if (strcmp(token, "specularTexture") == 0) {
             getToken(s_filename);
+            width = readInt();
+            height = readInt();
+        } else if (strcmp(token, "emitTexture") == 0) {
+            getToken(e_filename);
+            width = readInt();
+            height = readInt();
         } else if (strcmp(token, "refract") == 0) {
             refract = readFloat();
         } else if (strcmp(token, "refractColor") == 0) {
@@ -274,7 +285,9 @@ Material *SceneParser::parseMaterial() {
     }
     auto *answer = new Material(diffuseColor, specularColor,
                                 shininess, refract,
-                                emitColor, refractColor);
+                                emitColor, refractColor,
+                                d_filename, s_filename, e_filename, 
+                                width, height);
     return answer;
 }
 

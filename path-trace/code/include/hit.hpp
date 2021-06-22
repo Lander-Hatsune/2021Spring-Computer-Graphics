@@ -15,10 +15,13 @@ public:
         t = 1e38;
     }
 
-    Hit(float _t, Material *m, const Vector3f &n, bool outside = true) {
+    Hit(float _t, Material *m, const Vector3f &n, float x = 0, float y = 0,
+        bool outside = true) {
         t = _t;
         material = m;
         normal = n;
+        this->x = x;
+        this->y = y;
         outside = outside;
     }
 
@@ -26,6 +29,8 @@ public:
         t = h.t;
         material = h.material;
         normal = h.normal;
+        x = h.x;
+        y = h.y;
         outside = h.outside;
     }
 
@@ -44,14 +49,19 @@ public:
         return normal;
     }
 
+    float getX() const { return x; }
+    float getY() const { return y; }
+
     bool isOutside() const {
         return outside;
     }
 
-    void set(float _t, Material *m, const Vector3f &n, bool outside = true) {
+    void set(float _t, Material *m, const Vector3f &n,
+             float x = 0, float y = 0, bool outside = true) {
         t = _t;
         material = m;
         normal = n;
+        this->x = x, this->y = y;
         this->outside = outside;
     }
 
@@ -59,6 +69,7 @@ private:
     float t;
     Material *material;
     Vector3f normal;
+    float x, y;
     bool outside;
 };
 

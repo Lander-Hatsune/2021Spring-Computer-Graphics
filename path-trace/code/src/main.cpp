@@ -40,8 +40,9 @@ int main(int argc, char *argv[]) {
     Image img(camera->getWidth(), camera->getHeight());
     Image img_atals(camera->getWidth(), camera->getHeight());
     
-    #pragma omp parallel for schedule(dynamic, 1)
+    #pragma omp parallel for
     for (int x = 0; x < camera->getWidth(); x++) {
+        #pragma omp parallel for
         for (int y = 0; y < camera->getHeight(); y++) {
             Vector3f finColor = Vector3f::ZERO;
             for (int sample = 0; sample < ATALS_SAMPLE; sample++) {

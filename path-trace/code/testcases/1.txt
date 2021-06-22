@@ -1,8 +1,8 @@
 PerspectiveCamera {
     center 5 0.01 0.01
-    direction -1 0 0
+    direction -1 0 -0.1
     up 0 0 1
-    angle 30
+    angle 20
     width 256
     height 256
 }
@@ -62,8 +62,10 @@ Group {
 
     MaterialIndex 1
     Transform {
-        Translate 1 -1 0
-        Scale 4 4 4
+        Translate 0 0.2 -1.2
+        XRotate 90
+        YRotate 90
+        Scale 3 3 3
         TriangleMesh {
             obj_file mesh/bunny_200.obj
         }

@@ -3,16 +3,16 @@ PerspectiveCamera {
     direction -1 0 0
     up 0 0 1
     angle 30
-    width 512
-    height 512
+    width 800
+    height 450
 }
 
 Background {
-    color 0 0 0
+    color 1 1 1
 }
 
 Materials {
-    numMaterials 7
+    numMaterials 9
     Material { emitColor 1 1 1 }
     Material { diffuseColor 0.9 0.9 0.9 }
     Material { diffuseColor 0.9 0.2 0.2 }
@@ -20,52 +20,68 @@ Materials {
     Material { specularColor 0.99 0.99 0.99
                shininess 40 }
     Material { refract 1.7
-               refractColor 0.9 0.9 0.9 }
+               refractColor 0.99 0.99 0.99 }
+    Material { emitTexture mesh/rainbow0.jpg 1920 1080 }      
     Material { diffuseColor 0.3 0.3 0.3
                specularTexture mesh/dia.jpg 1024 768
                shininess 100}
+    Material { diffuseColor 0.3 0.3 0.3
+               specularColor 0.7 0.7 0.7
+               shininess 0.7 }
 }
 
 Group {
-    numObjects 7
+    numObjects 9
     MaterialIndex 1
     Sphere {
         center 0 0 500
-        radius 499
+        radius 498
     }
     Sphere {
         center -500 0 0
-        radius 499
+        radius 498
     }
     Sphere {
         center 0 0 -500
         radius 499
     }
-
-    MaterialIndex 2
     Sphere {
         center 0 -500 0
-        radius 499
+        radius 498
     }
-
-    MaterialIndex 3
     Sphere {
         center 0 500 0
-        radius 499
+        radius 498
+    }
+
+    MaterialIndex 6
+    Sphere {
+        center 1 1 1
+        radius 0.3
+    }
+
+    MaterialIndex 4
+    Transform {
+        Translate -1.4 -1.4 -0.3
+        ZRotate 30
+        Scale 0.4 0.4 1.3
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
     }
 
     MaterialIndex 0
     Transform {
-        Translate 0 0 1
+        Translate -0.5 -0.5 2
         Scale 0.4 0.4 0.01
         TriangleMesh {
             obj_file mesh/cube.obj
         }
     }
 
-    MaterialIndex 6
+    MaterialIndex 7
     Sphere {
-        center 0.4 0 -0.6
+        center -1 1 -0.6
         radius 0.4
     }
 }
