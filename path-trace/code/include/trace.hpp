@@ -73,18 +73,22 @@ namespace trace{
             } else {// solid
 
                 Vector3f color = Vector3f::ZERO;
-                if (m->getDiffuseColor(h.getX(), h.getY()).length() > 0.001)
-                    color += m->getDiffuseColor(h.getX(), h.getY()) *
-                        getColor(diffuse(p, n),
-                                 group, bgcolor,
-                                 factor * m->getDiffuseColor(h.getX(), h.getY()),
-                                 depth + 1);
-                if (m->getSpecularColor(h.getX(), h.getY()).length() > 0.001)
+                if (m->getSpecularColor(h.getX(), h.getY()).length() > 0.001) {
                     
                     color += m->getSpecularColor(h.getX(), h.getY()) *
                         getColor(reflect(r, p, n, m->getShininess()),
                                  group, bgcolor,
                                  factor * m->getSpecularColor(h.getX(), h.getY()),
+                                 depth + 1);
+                    if (m->getSpecularColor(h.getX(), h.getY()).length() > 1.5) {
+                        return color;
+                    }
+                }
+                if (m->getDiffuseColor(h.getX(), h.getY()).length() > 0.001)
+                    color += m->getDiffuseColor(h.getX(), h.getY()) *
+                        getColor(diffuse(p, n),
+                                 group, bgcolor,
+                                 factor * m->getDiffuseColor(h.getX(), h.getY()),
                                  depth + 1);
                 return color;
             }

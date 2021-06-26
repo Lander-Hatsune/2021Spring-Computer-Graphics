@@ -4,8 +4,8 @@
 #include "vecmath.h"
 
 const double PI = 3.1415926535;
-const int ATALS_SAMPLE = 10;
-const int MAX_DEPTH = 10;
+const int ATALS_SAMPLE = 1000;
+const int MAX_DEPTH = 30;
 
 inline double randDouble(double m, double M) {
     return ((double)rand() / RAND_MAX) * (M - m) + m;

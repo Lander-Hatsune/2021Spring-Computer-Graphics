@@ -21,7 +21,7 @@ Materials {
                shininess 40 }
     Material { refract 1.7
                refractColor 0.99 0.99 0.99 }
-    Material { emitTexture mesh/rainbow0.jpg 1920 1080 }
+    Material { emitTexture mesh/rainbow.png 596 474 }
     Material { diffuseColor 0.3 0.3 0.3
            specularColor 0.7 0.7 0.7
            shininess 0.7 }
@@ -34,7 +34,7 @@ Materials {
 }
 
 Group {
-    numObjects 7
+    numObjects 6
     MaterialIndex 1
     Sphere {
         center 0 0 500
@@ -60,14 +60,8 @@ Group {
 
     MaterialIndex 6
     Sphere {
-        center -0.5 0.01 0.5
-        radius 0.3
-    }
-
-    MaterialIndex 9
-    Sphere {
-        center 0.01 -0.5 -0.7
-        radius 0.3
+        center 0 0 0
+        radius 0.7
     }
 }
 

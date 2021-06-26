@@ -50,8 +50,7 @@ public:
 
                     //printf("len: %f hit_len: %f\n", len, hit_len);
                     if (len > hit_len) {
-                        Vector3f n = randUnitSphere();
-                        h.set(len, h.getMaterial(),
+                        h.set(hit_len, h.getMaterial(),
                               randUnitSphere(), 0, 0, true);
                         cur_ret = ret = true;
                     } else {

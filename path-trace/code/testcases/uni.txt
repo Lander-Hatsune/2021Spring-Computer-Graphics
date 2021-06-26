@@ -1,21 +1,22 @@
 PerspectiveCamera {
-    center 50 0.01 0.01
-    direction -1 -0.01 -0.01
+    center 50 -20 10
+    direction -1 0 0 
     up 0 0 1
     angle 45
-    width 800
-    height 450
+    width 1920
+    height 1080
 }
 
 Background {
-    color 0.1 0.1 0.1
+    color 0 0 0
 }
 
 Materials {
-    numMaterials 9
-    Material { emitColor 0.3 0.3 0.3 }
-    Material { diffuseColor 0.44 0.58 0.62 }
-    Material { diffuseColor 0.83 0.10 0.13 }
+    numMaterials 16
+    Material { emitTexture mesh/c.png 1200 1200 }
+    Material { specularColor 0.6 0.6 0.6
+               diffuseColor 0.4 0.5 0.5 }
+    Material { diffuseTexture mesh/wd.jpg 1820 1820}
     Material { diffuseColor 0 0.19 0.31
                specularColor 0.5 0.5 0.5
                shininess 1 }
@@ -26,43 +27,110 @@ Materials {
                refractColor 0.9 0.9 0.9 }
 
     Material { emitTexture mesh/rainbow0.jpg 1920 1080 }      
-    Material { specularTexture mesh/dia.jpg 1024 768
-               shininess 100}
-    Material { diffuseTexture mesh/floor0.jpg 2048 2048 }      
+    Material { emitTexture mesh/t.jpg 1600 1200 }
+    Material { diffuseTexture mesh/floor3.jpg 2000 1026 }
+    Material { diffuseColor 1 1 1
+               specularTexture mesh/star1.png 2887 1667
+               shininess 1000}
+    Material { diffuseTexture mesh/wd.jpg 1820 1820 }
+    Material { diffuseColor 1 1 1
+               density 0.1 }
+    Material { refract 1.7
+               refractColor 0.9 0.8 0.3 }
+    Material { refract 1.7
+               refractColor 0.3 0.5 0.9 }
+    Material { diffuseColor 0.8 0.8 0.8 }
+    Material { specularColor 0.6 0.6 0.6
+               diffuseColor 0.5 0.4 0.4 }
 }
 
 Group {
-    numObjects 5
+    numObjects 13
 
     MaterialIndex 0
-    Sphere {
-        center 0 0 1000
-        radius 950.02
+    Plane {
+        normal 0 0 -1
+        offset 36
     }
+
+    MaterialIndex 10
+    Plane {
+        normal 1 0 0
+        offset 10
+    }
+
+    MaterialIndex 9
+    Plane {
+        normal 0 -1 0
+        offset 0
+    }
+
+    MaterialIndex 8
+    Plane {
+        normal 0 0 1
+        offset 0
+    }
+
+    MaterialIndex 14
+    Plane {
+        normal -1 0 0
+        offset 51
+    }
+    Plane {
+        normal 0 1 0
+        offset 76
+    }
+
 
     MaterialIndex 1
-    Sphere {
-        center -5000 0 0
-        radius 4990
-    }
-    MaterialIndex 2
-    Sphere {
-        center 0 1000 0
-        radius 980
+    Transform {
+        Translate -5 -7 -4
+        XRotate 90
+        YRotate 90
+        Scale 50 50 50
+        TriangleMesh {
+            obj_file mesh/bunny_200.obj
+        }
     }
 
-    MaterialIndex 3
+    MaterialIndex 6
     Sphere {
-        center 0 0 -5000
-        radius 4990
+        center 8 -4 3
+        radius 3
+    }
+
+    MaterialIndex 5
+    Sphere {
+        center 20 -20 3
+        radius 3
+    }
+    MaterialIndex 4
+    Sphere {
+        center 20 -26 3
+        radius 3
+    }
+    MaterialIndex 15
+    Sphere {
+        center 20 -23 8.20
+        radius 3
     }
 
     MaterialIndex 4
-    Sphere {
-        center 0 0 0
-        radius 5
+    Transform {
+        Translate 0 -43 7
+        ZRotate 35
+        Scale 4 4 10
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
     }
-    
-
+    MaterialIndex 11
+    Transform {
+        Translate -15 0 20
+        Scale 15 15 3
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
+    }
 }
 
