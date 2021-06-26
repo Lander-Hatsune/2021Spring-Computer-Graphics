@@ -6,6 +6,7 @@
 #include <vecmath.h>
 #include <float.h>
 #include <cmath>
+#include "math.hpp"
 
 
 class Camera {
@@ -66,8 +67,8 @@ public:
         return Ray(center, direc);
     }
     Ray randGenRay(const Vector2f &point) override {
-        Vector2f sample(point.x() + rand() / RAND_MAX,
-                        point.y() + rand() / RAND_MAX);
+        Vector2f sample(point.x() + randDouble(0, 1),
+                        point.y() + randDouble(0, 1));
         return generateRay(sample);
     }
 private:

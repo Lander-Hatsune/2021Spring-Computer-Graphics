@@ -3,8 +3,8 @@ PerspectiveCamera {
     direction -1 0 0
     up 0 0 1
     angle 30
-    width 512
-    height 512
+    width 1024
+    height 1024
 }
 
 Background {
@@ -27,28 +27,28 @@ Group {
     numObjects 8
     MaterialIndex 1
     Sphere {
-        center 0 0 500
-        radius 499
+        center 0 0 50000
+        radius 49999
     }
     Sphere {
-        center -500 0 0
-        radius 499
+        center -50000 0 0
+        radius 49999
     }
     Sphere {
-        center 0 0 -500
-        radius 499
+        center 0 0 -50000
+        radius 49999
     }
 
     MaterialIndex 2
     Sphere {
-        center 0 -500 0
-        radius 499
+        center 0 -50000 0
+        radius 49999
     }
 
     MaterialIndex 3
     Sphere {
-        center 0 500 0
-        radius 499
+        center 0 50000 0
+        radius 49999
     }
 
     MaterialIndex 0

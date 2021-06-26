@@ -8,14 +8,6 @@
 
 namespace trace{
 
-    Vector3f randUnitSphere() {
-        double theta = 2 * PI * rand() / RAND_MAX,
-            rho = PI * rand() / RAND_MAX;
-        return Vector3f(cos(rho) * cos(theta),
-                        cos(rho) * sin(theta),
-                        sin(rho));
-    }
-
     Ray diffuse(const Vector3f& p, const Vector3f& n) {
         Vector3f ori = p + n;
         return Ray(p, (ori + randUnitSphere() - p).normalized());
@@ -48,8 +40,8 @@ namespace trace{
     }
 
     Vector3f getColor(const Ray& r, Group* group, Vector3f bgcolor,
-                      Vector3f factor) {
-        if (factor.length() < 0.001) return Vector3f::ZERO;
+                      Vector3f factor, int depth) {
+        if (depth > MAX_DEPTH || factor.length() < 0.001) return Vector3f::ZERO;
         Hit h;
         if (group->intersect(r, h, 1e-6)) {
             Material* m = h.getMaterial();
@@ -58,7 +50,7 @@ namespace trace{
             if (m->getEmitColor(h.getX(), h.getY()).length() > 0.001) {// light source
                 return m->getEmitColor(h.getX(), h.getY());
                 
-            } else if (fabs(m->getRefract() - 1) > 0.001) {// glass
+            } else if (m->getRefract() - 1 > 0.001) {// glass
 
                 double it = h.isOutside() ?
                     (1.0 / m->getRefract()) : m->getRefract();
@@ -71,11 +63,12 @@ namespace trace{
                     reflectance(cos_theta, it) > (double) rand() / RAND_MAX) {
                     return 0.9 *
                         getColor(reflect(r, p, n, m->getShininess()),
-                                 group, bgcolor, factor * 0.9);
+                                 group, bgcolor, factor * 0.9, depth + 1);
                 } else
                     return m->getRefractColor() *
                         getColor(refract(r, p, n, m->getRefract(), h.isOutside()),
-                                 group, bgcolor, factor * m->getRefractColor());
+                                 group, bgcolor, factor * m->getRefractColor(),
+                                 depth + 1);
 
             } else {// solid
 
@@ -84,13 +77,15 @@ namespace trace{
                     color += m->getDiffuseColor(h.getX(), h.getY()) *
                         getColor(diffuse(p, n),
                                  group, bgcolor,
-                                 factor * m->getDiffuseColor(h.getX(), h.getY()));
+                                 factor * m->getDiffuseColor(h.getX(), h.getY()),
+                                 depth + 1);
                 if (m->getSpecularColor(h.getX(), h.getY()).length() > 0.001)
                     
                     color += m->getSpecularColor(h.getX(), h.getY()) *
                         getColor(reflect(r, p, n, m->getShininess()),
                                  group, bgcolor,
-                                 factor * m->getSpecularColor(h.getX(), h.getY()));
+                                 factor * m->getSpecularColor(h.getX(), h.getY()),
+                                 depth + 1);
                 return color;
             }
         } else {

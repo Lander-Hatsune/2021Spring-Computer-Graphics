@@ -57,7 +57,7 @@ public:
 protected:
     Vector3f center;
     float radius;
-    Material *material;
+    Material* material;
 };
 
 

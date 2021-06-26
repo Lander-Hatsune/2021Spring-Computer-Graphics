@@ -25,7 +25,7 @@ public:
                       char const *d_filename = nullptr,
                       char const *s_filename = nullptr,
                       char const *e_filename = nullptr,
-                      int width = 0, int height = 0);
+                      int width = 0, int height = 0, float density = 1.);
 
     virtual ~Material() = default;
 
@@ -61,6 +61,9 @@ public:
     }
     virtual Vector3f getRefractColor() const {
         return refractColor;
+    }
+    virtual float getDensity() const {
+        return density;
     }
 
     virtual Vector3f getEmitColor(float x, float y) const {
@@ -101,6 +104,7 @@ protected:
     unsigned char* s_data;
     unsigned char* e_data;
     int width, height;
+    float density;
 };
 
 #endif // MATERIAL_H

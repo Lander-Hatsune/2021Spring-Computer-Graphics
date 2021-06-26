@@ -42,19 +42,22 @@ int main(int argc, char *argv[]) {
     
     #pragma omp parallel for
     for (int x = 0; x < camera->getWidth(); x++) {
-        #pragma omp parallel for
         for (int y = 0; y < camera->getHeight(); y++) {
             Vector3f finColor = Vector3f::ZERO;
             for (int sample = 0; sample < ATALS_SAMPLE; sample++) {
-                Ray ray = camera->generateRay(Vector2f(x, y));
+                Ray ray = camera->randGenRay(Vector2f(x, y));
                 finColor += trace::getColor(ray, group, bgcolor,
-                                            Vector3f(1, 1, 1));
+                                            Vector3f(1, 1, 1), 1);
             }
             finColor = finColor / ATALS_SAMPLE;
             finColor = Vector3f(sqrt(finColor.x()),
                                 sqrt(finColor.y()),
                                 sqrt(finColor.z()));
             img.SetPixel(x, y, finColor);
+            if (x % 20 == 0 && y == camera->getHeight() - 1) {
+                printf("temp %d\n", x);
+                img.SaveBMP(outputFile.c_str());
+            }
         }
     }
 

@@ -1,32 +1,27 @@
 PerspectiveCamera {
-    center 5 0.01 0.01
+    center 50 0.01 0.01
     direction -1 0 0
     up 0 0 1
     angle 30
-    width 1024
-    height 1024
+    width 512
+    height 512
 }
 
 Background {
-    color 0.3 0.3 0.3
+    color 0 0 0
 }
 
 Materials {
-    numMaterials 11
+    numMaterials 8
     Material { emitColor 1 1 1 }
     Material { diffuseColor 0.9 0.9 0.9 }
     Material { diffuseColor 0.9 0.2 0.2 }
     Material { diffuseColor 0.2 0.9 0.2 }
-    Material { specularColor 0.99 0.99 0.99
-               shininess 40 }
+    Material { specularColor 0.9 0.9 0.9
+               shininess 1 }
     Material { refract 1.7
-               refractColor 0.99 0.99 0.99 }
-    Material { emitTexture mesh/rainbow0.jpg 1920 1080 }
+               refractColor 0.9 0.9 0.9 }
     Material { diffuseColor 0.3 0.3 0.3
-           specularColor 0.7 0.7 0.7
-           shininess 0.7 }
-    Material { diffuseTexture mesh/t.jpg 1600 1200}
-    Material { diffuseColor 0.1 0.1 0.1
                specularTexture mesh/dia.jpg 1024 768
                shininess 100}
     Material { diffuseColor 1 1 1
@@ -38,36 +33,45 @@ Group {
     MaterialIndex 1
     Sphere {
         center 0 0 500
-        radius 499
+        radius 490
     }
     Sphere {
         center -500 0 0
-        radius 499
+        radius 490
     }
     Sphere {
         center 0 0 -500
-        radius 499
+        radius 490
     }
 
+    MaterialIndex 2
     Sphere {
         center 0 -500 0
-        radius 499
+        radius 490
     }
+
+    MaterialIndex 3
     Sphere {
         center 0 500 0
-        radius 499
+        radius 490
     }
 
-    MaterialIndex 6
-    Sphere {
-        center -0.5 0.01 0.5
-        radius 0.3
+    MaterialIndex 0
+    Transform {
+        Translate 0 0 10
+        Scale 4 4 0.01
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
     }
 
-    MaterialIndex 9
-    Sphere {
-        center 0.01 -0.5 -0.7
-        radius 0.3
+    MaterialIndex 7
+    Transform {
+        Scale 4 4 4
+        ZRotate 30
+        TriangleMesh {
+            obj_file mesh/cube.obj
+        }
     }
 }
 

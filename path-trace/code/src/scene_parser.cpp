@@ -250,6 +250,7 @@ Material *SceneParser::parseMaterial() {
         emitColor(0, 0, 0), refractColor(0, 0, 0);
     float shininess = 1.;
     float refract = 1.;
+    float density = 1.;
     getToken(token);
     assert (!strcmp(token, "{"));
     while (true) {
@@ -278,6 +279,8 @@ Material *SceneParser::parseMaterial() {
             refractColor = readVector3f();
         } else if (strcmp(token, "emitColor") == 0) {
             emitColor = readVector3f();
+        } else if (strcmp(token, "density") == 0) {
+            density = readFloat();
         } else {
             assert (!strcmp(token, "}"));
             break;
@@ -287,7 +290,7 @@ Material *SceneParser::parseMaterial() {
                                 shininess, refract,
                                 emitColor, refractColor,
                                 d_filename, s_filename, e_filename, 
-                                width, height);
+                                width, height, density);
     return answer;
 }
 

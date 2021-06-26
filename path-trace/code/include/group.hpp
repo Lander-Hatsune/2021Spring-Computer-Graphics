@@ -27,10 +27,42 @@ public:
     }
 
     // return in hit
-    bool intersect(const Ray &r, Hit &h, float tmin) override {
+    bool intersect(const Ray &r, Hit &H, float tmin) override {
         bool ret = false;
         for (auto object: list) {
-            if (object->intersect(r, h, tmin)) ret = true;
+            bool cur_ret = false;
+            Hit h = H;
+            if (object->intersect(r, h, tmin)) {
+                float dens = h.getMaterial()->getDensity();
+                if (1 - dens > 1e-3) {
+                    Hit h2;
+                    Ray r2(r.pointAtParameter(h.getT() + 0.001),
+                           r.getDirection());
+                    float len;
+                    if (object->intersect(r2, h2, 0.001)) {
+                        len = h2.getT();
+                    } else {
+                        len = h.getT();
+                    }
+                    float neg_inv_dens = -1 / dens;
+                    float hit_len = neg_inv_dens *
+                        log((double) rand() / RAND_MAX);
+
+                    //printf("len: %f hit_len: %f\n", len, hit_len);
+                    if (len > hit_len) {
+                        Vector3f n = randUnitSphere();
+                        h.set(len, h.getMaterial(),
+                              randUnitSphere(), 0, 0, true);
+                        cur_ret = ret = true;
+                    } else {
+                        cur_ret = false;
+                    }
+                } else cur_ret = ret = true;
+                
+                if (cur_ret == true) {
+                    H = h;
+                }
+            }
         }
         return ret;
     }
